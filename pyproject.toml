@@ -1,7 +1,7 @@
 [project]
 name = "opencv-comfyui"
-description = "Custom nodes for ComfyUI that implement all top-level standalone functions of OpenCV Python, auto-generated from their type definitions."
-version = "0.1.0"
+description = "all top-level standalone functions of OpenCV Python cv2 auto-generated from the type definitions"
+version = "0.1.1"
 license = {file = "LICENSE"}
 
 [project.urls]
