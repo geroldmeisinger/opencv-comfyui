@@ -4,7 +4,7 @@ Custom nodes for ComfyUI that implement all top-level standalone functions of Op
 
 ## Quickstart
 
-![cv2 basic workflow](workflows/cv2 basic workflow.png)
+![cv2 basic workflow](workflows/cv2_basic_workflow.png)
 
 1. Install OpenCV:
    ```sh
