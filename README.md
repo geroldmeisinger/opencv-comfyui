@@ -12,12 +12,11 @@ Custom nodes for ComfyUI that implement all top-level standalone functions of Op
    ```
 2. Convert between Comfy image and OpenCV nparray using:
    - `Image2Nparray`
-   - `Nparray2Image`
+   - `Nparrays2Image`
 3. Avoid the optional out-parameters (usually called `dst`).
 4. Convert color channels with `cvtColor`. Use:
-   - `2` for `RGB2BGR` or `BGR2RGB`
-   - `7` for `RGB2GRAY`
-   - `8` for `GRAY2RGB`
+   - `6` for `BGR2GRAY`
+   - `8` for `GRAY2BGR`
 5. Use literal strings for composite parameters (e.g., `[3, 3]` for `ksize`).
 
 These nodes are auto-generated from source, so they may be ugly and complex. **Here be dragons!**
@@ -34,7 +33,7 @@ You probably already have OpenCV already installed via some other custom node, o
 
 ```sh
 pip install opencv-python-contrib
-```sh
+```
 
 If you get:
 ```sh
