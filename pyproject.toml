@@ -1,0 +1,15 @@
+[project]
+name = "opencv-comfyui"
+description = "Custom nodes for ComfyUI that implement all top-level standalone functions of OpenCV Python, auto-generated from their type definitions."
+version = "0.1.0"
+license = {file = "LICENSE"}
+
+[project.urls]
+Repository = "https://github.com/geroldmeisinger/opencv-comfyui"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = "geroldmeisinger"
+DisplayName = "OpenCV"
+Icon = ""
+
