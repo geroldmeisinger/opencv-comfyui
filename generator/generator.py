@@ -55,30 +55,30 @@ unsupported_types = [
 	"Animation",
 	"CirclesGridFinderParameters",
 	"cv2.typing.FeatureDetector",
-	"AffineTransformer"
-	"AlignMTB"
-	"BackgroundSubtractorKNN"
-	"BackgroundSubtractorMOG2"
-	"CalibrateDebevec"
-	"CalibrateRobertson"
-	"CLAHE"
-	"GArrayDesc"
-	"GeneralizedHoughBallard"
-	"GeneralizedHoughGuil"
-	"GOpaqueDesc"
-	"GScalarDesc"
-	"HausdorffDistanceExtractor"
-	"HistogramCostExtractor"
-	"LineSegmentDetector"
-	"MergeDebevec"
-	"MergeMertens"
-	"MergeRobertson"
-	"ShapeContextDistanceExtractor"
-	"ThinPlateSplineShapeTransformer"
-	"Tonemap"
-	"TonemapDrago"
-	"TonemapMantiuk"
-	"TonemapReinhard"
+	"AffineTransformer",
+	"AlignMTB",
+	"BackgroundSubtractorKNN",
+	"BackgroundSubtractorMOG2",
+	"CalibrateDebevec",
+	"CalibrateRobertson",
+	"CLAHE",
+	"GArrayDesc",
+	"GeneralizedHoughBallard",
+	"GeneralizedHoughGuil",
+	"GOpaqueDesc",
+	"GScalarDesc",
+	"HausdorffDistanceExtractor",
+	"HistogramCostExtractor",
+	"LineSegmentDetector",
+	"MergeDebevec",
+	"MergeMertens",
+	"MergeRobertson",
+	"ShapeContextDistanceExtractor",
+	"ThinPlateSplineShapeTransformer",
+	"Tonemap",
+	"TonemapDrago",
+	"TonemapMantiuk",
+	"TonemapReinhard",
 ]
 
 node_def = '''
@@ -357,9 +357,10 @@ if __name__ == "__main__":
 	with open(pyi_path, 'r') as f:
 		content = f.read()
 
+	cv2.LUT
 	func_infos = parse_functions(content) # 776
 
-	func_infos_supported = [] # 656
+	func_infos_supported = [] # 635
 	for func_info in func_infos:
 		is_unsupported = False
 		for unsupported_type in unsupported_types:

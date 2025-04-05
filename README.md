@@ -1,6 +1,6 @@
 # OpenCV-ComfyUI
 
-Custom nodes for ComfyUI that implement all top-level standalone functions of OpenCV Python, auto-generated from their type definitions.
+Custom nodes for ComfyUI that implement all top-level standalone functions of OpenCV Python cv2, auto-generated from their type definitions.
 
 ## Quickstart
 
@@ -19,13 +19,13 @@ Custom nodes for ComfyUI that implement all top-level standalone functions of Op
    - `8` for `GRAY2BGR`
 5. Use literal strings for composite parameters (e.g., `[3, 3]` for `ksize`).
 
-These nodes are auto-generated from source, so they may be ugly and complex. **Here be dragons!**
+These nodes are auto-generated from source and so they are ugly and complex to use. **Expect dragons!**
+
+**Please leave some feedback!** If I see the project being used I will develop it further.
 
 ## Documentation
 
 For function references, see the official [OpenCV documentation](https://docs.opencv.org/4.11.0/index.html), start with [Image processing filters](https://docs.opencv.org/4.11.0/d4/d86/group__imgproc__filter.html).
-
-Note that most functions in OpenCV use out-parameters which mutate the provided image while also returning it as a return parameter. This pattern doesn't really fit the ComfyUI paradigm and you should generally avoid them. *(I have no automatic way to determine which of them are in or out-parameters yet, sorry)*.
 
 ### Installation
 
@@ -81,23 +81,27 @@ RGBA2GRAY = 11
 
 ### Troubleshooting
 
+```invalid syntax (<unknown>, line 0)```
+
+- Some of the input parameters require composite types and they are implemented using `ast.parse()` to convert from Python literal strings to objects, but the syntax you used is wrong (e.g. for `Size` use `(30, 40)`).
+
 ```
 Image2Nparray
 Only images with batch_size==1 are supported! batch_size=2
 ```
 
-Use the `ImageFromBatch length=1` node to select your image and create a image with batch_size=1.
+- Use the `ImageFromBatch` node (`length=1`) to select your image and create a image with `batch_size=1`.
 
 ```error: (-215:Assertion failed) img.type() == CV_8UC1 in function```
 
-The function requires a grayscale image. Convert it with `cvtColor code=6` first.
+- The function requires a grayscale image. Convert it with `cvtColor` (`code=6`) first.
 
 ```
 Nparrays2Image
 'NoneType' object has no attribute 'shape'
 ```
 
-Not every return type of `nparray` is actually an image. Some are just a 1-dimensional array of floats, but you are using it as an image. Check the OpenCV documentation. Please also note that the OpenCV nodes were auto-generated and not every function is useful within ComfyUI without further processing.
+- Not every return type of `nparray` is actually an image. Some are just a 1-dimensional array of floats, but you are using it as an image. Check the OpenCV documentation. Please also note that the OpenCV nodes were auto-generated and not every function is useful within ComfyUI without further processing.
 
 ## Development
 
@@ -105,12 +109,12 @@ Not every return type of `nparray` is actually an image. Some are just a 1-dimen
 
 Comfy `IMAGE` is actually a batch of images, usually with just one, but we have to handle the case with multiple images:
 1. We could iterate over the batch and call the OpenCV function for each image, but then we have to collect the output in lists as well. This works as long as the output is just a image, not a tuple. If it is tuple (e.g. `(nparray, int)`) either the user has to select the list index everytime or we treat all inputs as lists too.
-2. We always use batch index 0 but this may be surprising behaviour for the user.
-3. We just support batch_size=1
+2. We could always use batch index 0 but this may be surprising behaviour for the user.
+3. We could just support batch_size=1. I settled with this for now because it's easier.
 
 ### Image versus nparray
 
-The first design choice was how to convert and use Comfy image versus OpenCV nparray.
+For handling Comfy image versus OpenCV nparray we have the following choices:
 
 1. **Always use Comfy `IMAGE` for input and output**
 	- fails for functions requiring grayscale images (like `Canny`), because we always convert from RGB to BGR to RGB.
@@ -153,7 +157,7 @@ I then analyzed how many different types and paramter names are used (see `analy
   - `_typing.Callable` which is not supported yet
   - many class types (like `Tonemap` etc.), which are not supported yet
 
-After filtering out all unsupported types there were **656 functions left**.
+After filtering out all unsupported types there were **635 functions left**.
 
 For the composite types we could:
 * provide extra widgets to construct them (todo),
@@ -192,16 +196,15 @@ Ignored for now. Classes don't really fit the ComfyUI style but they would be po
 ## Todo
 
 * Widgets for composite types instead of literals
-* More convinveince functions like enums for `cvtColor`, preview for nparray
+* More convenience functions like enums for `cvtColor`, `Preview Nparray` node etc.
 * Support image batches with batch_size > 1
 * Parse doxygen docs and include them as help-strings
 * Automatic conversion between channels
 * Provide utility nodes for common patterns (like convert Hough lines to image)
 * Parse C++ code for value ranges and detect out-parameters
 * Better handling of out-parameters (or removal)
-* Blacklist functions which don't make sense in ComfyUI
+* Blacklist functions which don't make sense in ComfyUI (like return type None)
 * Categorize nodes and keep the namespace clean
 * Generate custom nodes for classes too
 
 I'm happy to take any contributions! :)
-
